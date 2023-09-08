@@ -13,10 +13,23 @@ public class Index {
     }
 
     public void initialize () throws Exception {
-        try {
+
             File objects = new File("./objects");
-            objects.mkdirs();
-        }
+            if (!objects.exists())
+                objects.mkdirs();
+        
+            File index = new File("index");
+            if (!index.exists())
+                index.createNewFile();
+
     }
     
+    public void addBlob (String filename) throws Exception {
+        Blob blob = new Blob(filename);
+        hashes.put(filename, blob.getEncryption());
+    }
+
+    public void writeToIndex() {
+        
+    }
 }

@@ -10,6 +10,8 @@ import java.security.NoSuchAlgorithmException;
  */
 public class Blob {
 
+    String encryption = "";
+
     public Blob (String filePath) throws Exception {
 
         StringBuilder builder = new StringBuilder();
@@ -23,9 +25,9 @@ public class Blob {
 
             buffer.close();
 
-            String hash = encryptThisString(builder.toString());
+            encryption = encryptThisString(builder.toString());
 
-            File file = new File("./objects/" + hash);
+            File file = new File("./objects/" + encryption);
             file.createNewFile();
  
     }
@@ -59,6 +61,10 @@ public class Blob {
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String getEncryption() {
+        return encryption;
     }
 
 }
