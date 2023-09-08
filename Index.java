@@ -33,6 +33,21 @@ public class Index {
 
     }
 
+    public void deleteBlob(String filename) throws Exception {
+
+        File tempFile = new File(filename);
+
+        if (tempFile.exists()) {
+
+            hashes.remove(filename);
+            writeToIndex();
+
+        } else {
+            System.out.println("file does not exist");
+        }
+
+    }
+
     public void writeToIndex() throws Exception {
 
         PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter("index")));

@@ -3,5 +3,7 @@ public class Tester {
 
         Blob blob = new Blob("./testfiles/something.txt");
 
+
+        Index index = new Index();
     }
 }
