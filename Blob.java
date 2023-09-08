@@ -1,0 +1,6 @@
+/**
+ * Blob
+ */
+public class Blob {
+
+}
