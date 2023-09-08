@@ -1,60 +1,51 @@
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 
 /**
  * Blob
  */
 public class Blob {
 
-    String encryption = "";
+    String encryption;
 
-    public Blob (String filePath) throws Exception {
+    public Blob(String filePath) throws Exception {
 
         StringBuilder builder = new StringBuilder();
 
-        BufferedReader buffer = new BufferedReader (new FileReader(filePath));
- 
-            String str;
-            while ((str = buffer.readLine()) != null) {
-                builder.append(str).append("\n");
-            }
+        BufferedReader buffer = new BufferedReader(new FileReader(filePath));
 
-            buffer.close();
+        while (buffer.ready()) {
+            builder.append((char) buffer.read());
+        }
 
-            encryption = encryptThisString(builder.toString());
+        buffer.close();
 
-            File file = new File("./objects/" + encryption);
-            file.createNewFile();
- 
+        encryption = encryptThisString(builder.toString());
+
+        File file = new File("./objects/" + encryption);
+        file.createNewFile();
+
     }
 
     public static String encryptThisString(String input) {
+        
         try {
-            // getInstance() method is called with algorithm SHA-1
-            MessageDigest md = MessageDigest.getInstance("SHA-1");
 
-            // digest() method is called
-            // to calculate message digest of the input string
-            // returned as array of byte
-            byte[] messageDigest = md.digest(input.getBytes());
+            MessageDigest md = MessageDigest.getInstance("SHA1");
+            md.update(input.getBytes());
+            byte[] b = md.digest();
 
-            // Convert byte array into signum representation
-            BigInteger no = new BigInteger(1, messageDigest);
-
-            // Convert message digest into hex value
-            String hashtext = no.toString(16);
-
-            // Add preceding 0s to make it 32 bit
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
+            char hexDigit[] = { '0', '1', '2', '3', '4', '5', '6', '7',
+                    '8', '9', 'a', 'b', 'c', 'd', 'e', 'f' };
+            StringBuffer buf = new StringBuffer();
+            for (int j = 0; j < b.length; j++) {
+                buf.append(hexDigit[(b[j] >> 4) & 0x0f]);
+                buf.append(hexDigit[b[j] & 0x0f]);
             }
+            return buf.toString();
 
-            // return the HashText
-            return hashtext;
         }
 
         // For specifying wrong message digest algorithms
