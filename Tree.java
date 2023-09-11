@@ -43,6 +43,36 @@ public class Tree {
         return false;
     }
 
-    
+    public boolean deleteTree(String input) throws IOException {
+       Blob bl = new Blob(origFileName);
+        String newFileName = bl.getSha1();
+
+        String newEntry = origFileName + " : " + newFileName;
+        
+        File inputFile = new File("index");
+        File tempFile = new File("myTempFile.txt");
+        
+        if(!entryExists(newEntry, ind)) {
+            return false;
+        }
+
+        //removing line
+        BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+        
+        String lineToRemove = newEntry;
+        String currentLine;
+        
+        while((currentLine = reader.readLine()) != null) {
+            // trim newline when comparing with lineToRemove
+            String trimmedLine = currentLine.trim();
+            if(trimmedLine.equals(lineToRemove)) continue;
+            writer.write(currentLine + System.getProperty("line.separator"));
+        }
+        writer.close(); 
+        reader.close(); 
+        boolean successful = tempFile.renameTo(inputFile);
+        return successful;
+    }
 
 }
