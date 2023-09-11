@@ -20,6 +20,29 @@ public class Tree {
 
     }
 
+    public boolean addTree(String name) throws IOException {
+       if(!entryExists(name, tree)) {
+            PrintWriter pw = new PrintWriter(new FileWriter(tree, true));
+            pw.append(name + "\n");
+            pw.close();
+            return true;
+        }
+        return false;
+    }
+
+    private boolean entryExists(String name, File tree2) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(tree));
+        while(br.ready()) {
+            String str = br.readLine();
+            if(str.equals(name)) {
+                br.close();
+                return true;
+            }
+        }
+        br.close();
+        return false;
+    }
+
     
 
 }
