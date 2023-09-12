@@ -44,15 +44,16 @@ public class Tree {
     }
 
     public boolean deleteTree(String input) throws IOException {
-       Blob bl = new Blob(origFileName);
+        /*Blob bl = new Blob(origFileName);
         String newFileName = bl.getSha1();
 
-        String newEntry = origFileName + " : " + newFileName;
+        String newEntry = origFileName + " : " + newFileName;*/
         
-        File inputFile = new File("index");
+        File inputFile = new File("tree");
         File tempFile = new File("myTempFile.txt");
+        String lineToRemove = "";
         
-        if(!entryExists(newEntry, ind)) {
+        if(!entryExists2(input, tree, lineToRemove)) {
             return false;
         }
 
@@ -60,7 +61,6 @@ public class Tree {
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
         BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
         
-        String lineToRemove = newEntry;
         String currentLine;
         
         while((currentLine = reader.readLine()) != null) {
@@ -74,5 +74,20 @@ public class Tree {
         boolean successful = tempFile.renameTo(inputFile);
         return successful;
     }
+
+    private boolean entryExists2(String name, File tree2, String line) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(tree));
+        while(br.ready()) {
+            String str = br.readLine();
+            if(str.contains(name)) {
+                line = str;
+                br.close();
+                return true;
+            }
+        }
+        br.close();
+        return false;
+    }
+
 
 }
