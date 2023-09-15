@@ -50,8 +50,9 @@ public class ExampleTester {
 
     @Test
     @DisplayName("[8] Test if initialize and objects are created correctly")
-    void testTreeConstructor() throws Exception {
+    void testTreeInitialize() throws Exception {
         Tree test = new Tree();
+        test.initialize();
 
         // check if the file exists
         File file = new File("tree");

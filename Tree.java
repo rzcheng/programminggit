@@ -24,7 +24,7 @@ public class Tree {
     }
 
     public boolean addTree(String input) throws IOException {
-       if(!entryExists(input, tree)) {
+       if(!entryExists(input, tree)) { //is the input just the whole string? or do u need to create something?
             PrintWriter pw = new PrintWriter(new FileWriter(tree, true));
             pw.append(input + "\n");
             pw.close();

@@ -2,6 +2,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +20,7 @@ public class TreeTest {
         testFile.createNewFile();
         PrintWriter pw = new PrintWriter(new FileWriter("file1"));
         
-        pw.print("derpderpderpderp");
+        pw.print("derpderpderp");
         pw.close();
     }
 
@@ -47,12 +48,20 @@ public class TreeTest {
     }
 
     @Test
-    void testAddTree() {
+    void testAddTree() throws IOException {
+        Tree test = new Tree();
+        test.addTree("blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1");
 
+        // check if the above string is in test
+        File file = new File("tree");
+        Path path = Paths.get("objects");
+
+        assertTrue(file.exists());
+        assertTrue(Files.exists(path));
     }
 
     @Test
     void testDeleteTree() {
-
+        
     }
 }
