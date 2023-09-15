@@ -9,7 +9,11 @@ import java.io.PrintWriter;
 public class Tree {
     private File tree = new File ("tree");
 
-    public Tree () throws IOException {
+    public Tree () {
+        
+    }
+
+    public void initialize() throws IOException {
         if(!tree.exists()) {
             tree.createNewFile();
         }
@@ -17,13 +21,12 @@ public class Tree {
         String dirName = "./objects/";
         File dir = new File (dirName);
         dir.mkdir();
-
     }
 
-    public boolean addTree(String name) throws IOException {
-       if(!entryExists(name, tree)) {
+    public boolean addTree(String input) throws IOException {
+       if(!entryExists(input, tree)) {
             PrintWriter pw = new PrintWriter(new FileWriter(tree, true));
-            pw.append(name + "\n");
+            pw.append(input + "\n");
             pw.close();
             return true;
         }

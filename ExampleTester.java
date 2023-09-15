@@ -1,6 +1,8 @@
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,6 +18,11 @@ public class ExampleTester {
     @BeforeAll
     static void setUpBeforeClass() throws Exception {
         File testFile = new File("file1");
+        testFile.createNewFile();
+        PrintWriter pw = new PrintWriter(new FileWriter("file1"));
+        
+        pw.print("derpderpderpderp");
+        pw.close();
     }
 
     @AfterAll
@@ -27,7 +34,7 @@ public class ExampleTester {
          */
     }
 
-    @Test
+    /*@Test
     @DisplayName("[8] Test if initialize and objects are created correctly")
     void testInitialize() throws Exception {
         Index test = new Index();
@@ -39,7 +46,7 @@ public class ExampleTester {
 
         assertTrue(file.exists());
         assertTrue(Files.exists(path));
-    }
+    }*/
 
     @Test
     @DisplayName("[8] Test if initialize and objects are created correctly")
