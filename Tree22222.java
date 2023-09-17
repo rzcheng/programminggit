@@ -38,21 +38,18 @@ public class Tree22222 {
     }
 
     
-    /*public void initialize() throws IOException {
-        String dirName = "./objects/";
-        File dir = new File (dirName);
-        dir.mkdir();
-        tree = new File (dir, "tree");
+    public void saveToObjects() throws IOException {
         rename(tree);
     }
 
-    private void rename(File fileName) throws IOException {
+    public void rename(File fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String str = "";
 
         while(br.ready()) {
-            str += br.readLine();
+            str += br.readLine()+"\n";
         }
+        str = str.trim();//get rid of extra line
 
         br.close();
 
@@ -67,9 +64,9 @@ public class Tree22222 {
         String dirName = "./objects/";
         File dir = new File (dirName);//create this directory (File class java)
         //dir.mkdir();
-        tree = new File (dir, sha1);
+        File newFile = new File (dir, sha1);
 
-        PrintWriter pw = new PrintWriter(tree);
+        PrintWriter pw = new PrintWriter(newFile);
 
         pw.print(str);
 
@@ -107,7 +104,7 @@ public class Tree22222 {
         String result = formatter.toString();
         formatter.close();
         return result;
-    }*/
+    }
     
 
 
@@ -208,14 +205,14 @@ public class Tree22222 {
                 if(treeList.size()==0 && i==blobList.size()-2 && blobList.get(i+1).equals(lineToRemove)) {
                     pw.print(str);
                 }
+                else if(i==blobList.size()-1 && treeList.size()==0) {
+                    pw.print(str);
+                }
+                else if(i==blobList.size()-1 && treeList.size()>0) {
+                    pw.println(str);
+                }
                 else if(i!=blobList.size()-1) {
                     pw.println(str);
-                }
-                else if(treeList.size()>0 && i==blobList.size()-1) {
-                    pw.println(str);
-                }
-                else {
-                    pw.print(str);
                 }
             }
         }
@@ -225,11 +222,11 @@ public class Tree22222 {
                 if(i==treeList.size()-2 && treeList.get(i+1).equals(lineToRemove)) {
                     pw.print(str);
                 }
-                else if(i!=treeList.size()-1) {
-                    pw.println(str);
+                else if(i==treeList.size()-1) {
+                    pw.print(str);
                 }
                 else {
-                    pw.print(str);
+                    pw.println(str);
                 }
             }
         }
