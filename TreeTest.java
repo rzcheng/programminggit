@@ -60,6 +60,8 @@ public class TreeTest {
     @Test
     void testAddTree() throws IOException {
         Tree test = new Tree();
+        test.initialize();
+
         String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
         test.addTree(input);
 
@@ -84,6 +86,8 @@ public class TreeTest {
     @Test
     void testAddTreeIfAlreadyTree() throws IOException {
         Tree test = new Tree();
+        test.initialize();
+
         String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
         test.addTree(input);
         test.addTree(input);
@@ -107,6 +111,8 @@ public class TreeTest {
     void testDeleteTree() throws Exception {
         //creates a testing tree
         Tree test = new Tree();
+        test.initialize();
+
         File file = new File("tree");
         String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
         String input2 = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
@@ -131,6 +137,7 @@ public class TreeTest {
         }
         br.close();
 
+        assertTrue(deletedCounterN==1);
         assertFalse(deletedCounterN==0);
         assertTrue(deletedCounterY==0);
         
@@ -139,6 +146,8 @@ public class TreeTest {
     @Test
     void testDeleteTreeIfNoTree() throws Exception {
         Tree test = new Tree();
+        test.initialize();
+
         String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
         test.addTree(input);
 

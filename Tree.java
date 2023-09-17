@@ -14,13 +14,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Tree22222 {
+public class Tree {
     private File tree;
     //might need a hashmap
     private ArrayList<String> blobList;
     private ArrayList<String> treeList;
 
-    public Tree22222 () {
+    public Tree () {
         blobList = new ArrayList<String>();
         treeList = new ArrayList<String>();
     }
@@ -142,7 +142,7 @@ public class Tree22222 {
 
     //checks if input line appears in a file
     private boolean entryExists(String inputLine, File tree2) throws IOException {
-        BufferedReader br = new BufferedReader(new FileReader(tree));
+        BufferedReader br = new BufferedReader(new FileReader(tree2));
         while(br.ready()) {
             String str = br.readLine();
             if(str.equals(inputLine)) {
@@ -152,6 +152,25 @@ public class Tree22222 {
         }
         br.close();
         return false;
+
+        /*String type = inputLine.substring(0,4);
+        if(type.equals("blob")) {
+            for(int i=0; i<blobList.size();i ++) {
+                String str = blobList.get(i);
+                if(str.equals(inputLine)) {
+                    return true;
+                }
+            }
+        }
+        else {
+            for(int i=0; i<treeList.size();i ++) {
+                String str = treeList.get(i);
+                if(str.equals(inputLine)) {
+                    return true;
+                }
+            }
+        }
+        return false;*/
     }
 
     private void printList(File fileName) throws IOException {
