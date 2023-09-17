@@ -8,14 +8,23 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Formatter;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
-public class Tree {
+public class Tree22222 {
     private File tree;
     //might need a hashmap
+    private HashMap<String,List<String>> map;
 
-    public Tree () {
-        
+    public Tree22222 () {
+        map = new HashMap<String,List<String>>();
+        ArrayList<String> blobList = new ArrayList<String>();
+        map.put("blob",blobList);
+        ArrayList<String> treeList = new ArrayList<String>();
+        map.put("tree",treeList);
     }
 
     public void initialize() throws IOException {
