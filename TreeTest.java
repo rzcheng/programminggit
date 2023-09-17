@@ -1,3 +1,4 @@
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -103,7 +104,7 @@ public class TreeTest {
     }
 
     @Test
-    void testDeleteTree() throws IOException {
+    void testDeleteTree() throws Exception {
         //creates a testing tree
         Tree test = new Tree();
         File file = new File("tree");
@@ -114,23 +115,33 @@ public class TreeTest {
         test.addTree(input2);
         test.addTree(input3);
 
-        test.deleteTree("file2.txt");//tester is wrong? i am wrong?
+        test.deleteTree("file2.txt");//input3
 
-        int deletedCounter = 0;
+        int deletedCounterN = 0;//counts times input appears
+        int deletedCounterY = 0;//counts times input3 appears
         BufferedReader br = new BufferedReader(new FileReader(file));
         while(br.ready()) {
-            if(input.equals(br.readLine())) {
-                deletedCounter++;
+            String str = br.readLine();
+            if(input.equals(str)) {
+                deletedCounterN++;
+            }
+            if(input3.equals(str)) {
+                deletedCounterY++;
             }
         }
         br.close();
 
-        assertTrue(deletedCounter==0);
+        assertFalse(deletedCounterN==0);
+        assertTrue(deletedCounterY==0);
         
     }
 
     @Test
-    void testDeleteTreeIfNoTree() {
-        
+    void testDeleteTreeIfNoTree() throws Exception {
+        Tree test = new Tree();
+        String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
+        test.addTree(input);
+
+        assertFalse(test.deleteTree("blahblah"));
     }
 }
