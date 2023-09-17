@@ -33,11 +33,12 @@ public class Tree {
         return false;
     }
 
-    private boolean entryExists(String name, File tree2) throws IOException {
+    //checks if input line appears in a file
+    private boolean entryExists(String inputLine, File tree2) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(tree));
         while(br.ready()) {
             String str = br.readLine();
-            if(str.equals(name)) {
+            if(str.equals(inputLine)) {
                 br.close();
                 return true;
             }
@@ -78,11 +79,12 @@ public class Tree {
         return successful;
     }
 
-    private boolean entryExists2(String name, File tree2, String line) throws IOException {
+    //checks if input appears in file
+    private boolean entryExists2(String input, File tree2, String line) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(tree));
         while(br.ready()) {
             String str = br.readLine();
-            if(str.contains(name)) {
+            if(str.contains(input)) {
                 line = str;
                 br.close();
                 return true;

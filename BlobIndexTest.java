@@ -1,6 +1,8 @@
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.nio.file.Files;
@@ -24,9 +26,9 @@ public class BlobIndexTest {
         pw.close();
 
         //creating the objects directory
-        File objects = new File("./objects");
+        /*File objects = new File("./objects");
         if (!objects.exists())
-            objects.mkdirs();
+            objects.mkdirs();*/
     }
 
     @AfterAll
@@ -54,15 +56,29 @@ public class BlobIndexTest {
 
 
     @Test
-    void testAddBlob() throws Exception {
-        setUpBeforeClass();
+    void testCreateBlob() throws Exception {
+        //setUpBeforeClass();
+        File objects = new File("./objects");
+        if (!objects.exists())
+            objects.mkdirs();
 
         Blob testBlob = new Blob("file1");//????
-        File file = new File("index");
+        File file = new File("732d12f7e4f2e629e2954acbb720c32c0be985d1");
         Path path = Paths.get("objects");
 
         assertTrue(file.exists());
         assertTrue(Files.exists(path));
+
+        //STILL NEED TO TEST CONTENTS MATCH
+        String contents = "";
+        BufferedReader br = new BufferedReader(new FileReader("732d12f7e4f2e629e2954acbb720c32c0be985d1"));
+        while(br.ready()) {
+            contents += "" + br.readLine();
+        }
+        br.close();
+        
+        //File contents of Tree contain input
+        assertTrue(contents.contains("derpderpderp"));//the sha1 new file created by blob does not contain original contents
     }
 
 }
