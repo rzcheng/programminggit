@@ -47,7 +47,7 @@ public class Tree {
         return false;
     }
 
-    public boolean deleteTree(String input) throws IOException {
+    public boolean deleteTree(String input) throws Exception {
         /*Blob bl = new Blob(origFileName);
         String newFileName = bl.getSha1();
 
@@ -57,9 +57,11 @@ public class Tree {
         File tempFile = new File("myTempFile.txt");
         String lineToRemove = "";
         
-        if(!entryExists2(input, tree, lineToRemove)) {
+        if(!entryExists2(input, tree)) {
             return false;
         }
+
+        lineToRemove = findLine(input,tree);
 
         //removing line
         BufferedReader reader = new BufferedReader(new FileReader(inputFile));
@@ -80,12 +82,11 @@ public class Tree {
     }
 
     //checks if input appears in file
-    private boolean entryExists2(String input, File tree2, String line) throws IOException {
+    private boolean entryExists2(String input, File tree2) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(tree));
         while(br.ready()) {
             String str = br.readLine();
             if(str.contains(input)) {
-                line = str;
                 br.close();
                 return true;
             }
@@ -94,5 +95,17 @@ public class Tree {
         return false;
     }
 
+    private String findLine(String input, File tree2) throws Exception {
+        BufferedReader br = new BufferedReader(new FileReader(tree));
+        while(br.ready()) {
+            String str = br.readLine();
+            if(str.contains(input)) {
+                br.close();
+                return str;
+            }
+        }
+        br.close();
+        throw new Exception("line not found", null);
+    }
 
 }
