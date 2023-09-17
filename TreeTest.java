@@ -64,7 +64,7 @@ public class TreeTest {
 
         //check if the above string is in test file
         File file = new File("tree");
-        Path path = Paths.get("objects");
+        //Path path = Paths.get("objects");
 
         //TEST CONTENTS: test if the "blob : sha1 : fileName" is in there
         //ACTUALLY just test if all contents are the same? how?? IDK!!!!!!
@@ -82,11 +82,50 @@ public class TreeTest {
 
     @Test
     void testAddTreeIfAlreadyTree() throws IOException {
-        
+        Tree test = new Tree();
+        String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
+        test.addTree(input);
+        test.addTree(input);
+
+        File file = new File("tree");
+
+        int inputCounter = 0;
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        while(br.ready()) {
+            if(input.equals(br.readLine())) {
+                inputCounter++;
+            }
+        }
+        br.close();
+
+        assertTrue(inputCounter<=1);
+
     }
 
     @Test
-    void testDeleteTree() {
+    void testDeleteTree() throws IOException {
+        //creates a testing tree
+        Tree test = new Tree();
+        File file = new File("tree");
+        String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
+        String input2 = "tree : bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b";
+        String input3 = "blob : 81e0268c84067377a0a1fdfb5cc996c93f6dcf9f : file2.txt";
+        test.addTree(input);
+        test.addTree(input2);
+        test.addTree(input3);
+
+        test.deleteTree("file2.txt");//tester is wrong? i am wrong?
+
+        int deletedCounter = 0;
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        while(br.ready()) {
+            if(input.equals(br.readLine())) {
+                deletedCounter++;
+            }
+        }
+        br.close();
+
+        assertTrue(deletedCounter==0);
         
     }
 
