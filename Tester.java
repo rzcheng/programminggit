@@ -14,6 +14,6 @@ public class Tester {
         index.deleteBlob("example.txt");
         index.addBlob("something.txt");
 
-        
+        System.out.println("hi");
     }
 }
