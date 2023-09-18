@@ -212,7 +212,7 @@ public class Tree {
         }
 
         lineToRemove = findLine(input,tree);
-        System.out.println("remove: " + lineToRemove);
+        System.out.println("remove: " + lineToRemove);//test: correct
 
         //removing line
         //BufferedReader br = new BufferedReader(new FileReader(inputFile));
