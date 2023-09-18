@@ -49,6 +49,6 @@ public class treetester {
         //System.out.println("\nREMOVED? " + test1.deleteTree("bd1ccec139dead5ee0d8c3a0499b42a7d43ac44b"));//RIGHT, it removed the tree
         System.out.println("\nREMOVED? " + test1.deleteTree("tree : e7d79898d3342fd15d"));
 
-        //test1.saveToObjects();
+        test1.saveToObjects();
     }
 }

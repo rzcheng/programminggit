@@ -26,6 +26,9 @@ public class Tree {
     }
 
     public void initialize() throws IOException {
+        File objects = new File("./objects");
+        if (!objects.exists())
+            objects.mkdirs();
         //String dirName = "./objects/";
         //File dir = new File (dirName);
         //dir.mkdir();
@@ -214,9 +217,19 @@ public class Tree {
         lineToRemove = findLine(input,tree);
         System.out.println("remove: " + lineToRemove);//test: correct
 
+        String type = lineToRemove.substring(0,4);
+        if(type.equals("blob")) {
+            blobList.remove(lineToRemove);
+        }
+        else if(type.equals("tree")) {
+            treeList.remove(lineToRemove);
+        }
+
+        printList(tempFile);
+
         //removing line
         //BufferedReader br = new BufferedReader(new FileReader(inputFile));
-        PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+        /*PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
         
         for(int i=0; i<blobList.size(); i++) {
             String str = blobList.get(i);
@@ -251,7 +264,7 @@ public class Tree {
         }
 
 
-        pw.close(); 
+        pw.close(); */
         //br.close(); 
         boolean successful = tempFile.renameTo(inputFile);
         return successful;
