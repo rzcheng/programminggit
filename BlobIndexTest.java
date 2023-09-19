@@ -1,31 +1,38 @@
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import Utilities.FileUtils;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import Utilities.FileUtils;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import Utilities.FileUtils;
+
 public class BlobIndexTest {
      @BeforeAll
     static void setUpBeforeClass() throws Exception {
         //creating test file
-        File testFile = new File("file1");
+        /*File testFile = new File("file1");
         testFile.createNewFile();
         PrintWriter pw = new PrintWriter(new FileWriter("file1"));
         
         pw.print("derpderpderp");
-        pw.close();
+        pw.close();*/
+        FileUtils.createFile("file1");
+        FileUtils.writeFile("file1", "derpderpderp");
 
         //creating the objects directory
         /*File objects = new File("./objects");
@@ -47,7 +54,7 @@ public class BlobIndexTest {
         //setUpBeforeClass();
         File objects = new File("./objects");
         if (!objects.exists())
-            objects.mkdirs();
+            FileUtils.createDirectory("./objects");
 
         Blob testBlob = new Blob("file1");//????
         File file = new File("732d12f7e4f2e629e2954acbb720c32c0be985d1");
@@ -144,6 +151,13 @@ public class BlobIndexTest {
         assertFalse(entryExists);
 
 
+    }
+
+    @Test
+    void testIDK() throws URISyntaxException {
+        FileUtils.createFile("example2.txt");
+        File hi = new File("example2.txt");
+        assertTrue(hi.exists());
     }
 
 
