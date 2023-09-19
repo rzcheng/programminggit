@@ -1,0 +1,204 @@
+[
+    {
+        "className": "Blob",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [
+                    "String"
+                ],
+                "values": [
+                    "File name"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "encryptThisString",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "String to encrypt"
+                ]
+            },
+            {
+                "methodName": "getEncryption",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Index",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "initalize",
+                "parameters": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "addBlob",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "File name"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "deleteBlob",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "File name"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "writeToIndex",
+                "parameters": [],
+                "values": []
+            }
+        ]
+    },
+    {
+        "className": "Tree",
+        "constructorConfigs": [
+            {
+                "parameterTypes": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "initalize",
+                "parameters": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "saveToObjects",
+                "parameters": [],
+                "values": []
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "rename",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "File name"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "encryptPassword",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "String to encrypt"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "byteToHex",
+                "parameters": [
+                    "final byte[] hash"
+                ],
+                "values": [
+                    "byte array to be converted to hex"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "addTree",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "Entry name"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "deleteTree",
+                "parameters": [
+                    "String"
+                ],
+                "values": [
+                    "file name of to-be-deleted blob or sha1 of to-be-deleted tree entry"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "entryExists",
+                "parameters": [
+                    "String",
+                    "File"
+                ],
+                "values": [
+                    "entry name",
+                    "file to look in"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "entryExists2",
+                "parameters": [
+                    "String",
+                    "File"
+                ],
+                "values": [
+                    "entry name",
+                    "file to look in"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "printList",
+                "parameters": [
+                    "File"
+                ],
+                "values": [
+                    "file to print to"
+                ]
+            }
+        ],
+        "methodConfigs": [
+            {
+                "methodName": "findLine",
+                "parameters": [
+                    "String",
+                    "File"
+                ],
+                "values": [
+                    "part of to-be-found entry",
+                    "file to look in"
+                ]
+            }
+        ]
+    }
+]

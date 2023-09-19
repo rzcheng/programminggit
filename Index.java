@@ -18,7 +18,7 @@ public class Index {
         if (!objects.exists())
             objects.mkdirs();
 
-        File index = new File("index");
+        File index = new File("732d12f7e4f2e629e2954acbb720c32c0be985d1");
         if (!index.exists())
             index.createNewFile();
 
