@@ -10,13 +10,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Formatter;
 
-public class Tree {
+public class oldTree2 {
     private File tree;
     //might need a hashmap
     private ArrayList<String> blobList;
     private ArrayList<String> treeList;
 
-    public Tree () {
+    public oldTree2 () {
         blobList = new ArrayList<String>();
         treeList = new ArrayList<String>();
     }
@@ -25,7 +25,11 @@ public class Tree {
         File objects = new File("./objects");
         if (!objects.exists())
             objects.mkdirs();
+        //String dirName = "./objects/";
+        //File dir = new File (dirName);
+        //dir.mkdir();
         tree = new File ("tree");
+        //tree = new File ("tree");
 
         if(!tree.exists()) {
             tree.createNewFile();
@@ -51,6 +55,9 @@ public class Tree {
         //converting to sha1
 
         String sha1 = encryptPassword(str);
+        //System.out.println("TEST BYTE: " + str);
+        
+        //System.out.println("SHA : " + sha1);
 
         //printing to objects folder
         String dirName = "./objects/";
@@ -122,8 +129,8 @@ public class Tree {
 
     }
 
-    //checks if input line appears in a file
-    private boolean entryExists(String inputLine, File tree2) throws IOException {
+    /*private String checkContents(File tree2) throws IOException {
+        String contents = "";
         BufferedReader br = new BufferedReader(new FileReader(tree2));
         while(br.ready()) {
             contents += "" + br.readLine();
@@ -192,6 +199,9 @@ public class Tree {
     }
 
     public boolean deleteTree(String input) throws Exception {
+        
+        //String dirName = "./objects/";
+        //File dir = new File (dirName);
         File inputFile = new File("tree");
         File tempFile = new File("myTempFile.txt");
         String lineToRemove = "";
@@ -213,6 +223,45 @@ public class Tree {
 
         printList(tempFile);
 
+        //removing line
+        //BufferedReader br = new BufferedReader(new FileReader(inputFile));
+        /*PrintWriter pw = new PrintWriter(new FileWriter(tempFile));
+        
+        for(int i=0; i<blobList.size(); i++) {
+            String str = blobList.get(i);
+            if(!str.equals(lineToRemove)) {
+                if(treeList.size()==0 && i==blobList.size()-2 && blobList.get(i+1).equals(lineToRemove)) {
+                    pw.print(str);
+                }
+                else if(i==blobList.size()-1 && treeList.size()==0) {
+                    pw.print(str);
+                }
+                else if(i==blobList.size()-1 && treeList.size()>0) {
+                    pw.println(str);
+                }
+                else if(i!=blobList.size()-1) {
+                    pw.println(str);
+                }
+            }
+        }
+        for(int i=0; i<treeList.size(); i++) {
+            String str = treeList.get(i);
+            if(!str.equals(lineToRemove)) {
+                if(i==treeList.size()-2 && treeList.get(i+1).equals(lineToRemove)) {
+                    pw.print(str);
+                }
+                else if(i==treeList.size()-1) {
+                    pw.print(str);
+                }
+                else {
+                    pw.println(str);
+                }
+            }
+        }
+
+
+        pw.close(); */
+        //br.close(); 
         boolean successful = tempFile.renameTo(inputFile);
         return successful;
     }

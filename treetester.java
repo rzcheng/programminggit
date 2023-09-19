@@ -1,7 +1,11 @@
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import Utilities.FileUtils;
 
 public class treetester {
+    protected static String fileName = "andrew.txt";
+    protected static String folderName = "andrewfolder";
+    protected static String content = "Hello World!";
     public static void main (String[] args) throws Exception {
         //Blob test = new Blob("example.txt");
 
@@ -28,7 +32,7 @@ public class treetester {
         //System.out.println("\nREMOVED? " + test1.deleteTree("tree : e7d79898d3342fd15d"));
         */
 
-        Tree test1 = new Tree();
+        oldTree2 test1 = new oldTree2();
         test1.initialize();
 
         String input1 = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
@@ -50,5 +54,22 @@ public class treetester {
         System.out.println("\nREMOVED? " + test1.deleteTree("tree : e7d79898d3342fd15d"));
 
         test1.saveToObjects();
+
+
+        System.out.println("hi");
+        FileUtils.createFile(fileName);
+        FileUtils.createDirectory(folderName);
+
+        /*FileUtils.writeFile(fileName, content);
+
+        String content = FileUtils.readFile(fileName);
+        String sha = FileUtils.sha1(content);
+
+        FileUtils.deleteFile(fileName);
+        FileUtils.deleteDirectory(folderName);
+
+        FileUtils.fileExists(fileName);*/
+
+        System.out.println("hHIHIHHIHIHIHI");
     }
 }
