@@ -123,7 +123,7 @@ public class Tree {
     }
 
     //checks if input line appears in a file
-    private boolean entryExists(String inputLine, File tree2) throws IOException {
+    /*private boolean entryExists(String inputLine, File tree2) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(tree2));
         while(br.ready()) {
             contents += "" + br.readLine();
