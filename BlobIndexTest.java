@@ -31,7 +31,7 @@ public class BlobIndexTest {
         
         pw.print("derpderpderp");
         pw.close();*/
-        FileUtils.createFile("file1");
+       // FileUtils.createFile("file1");
         FileUtils.writeFile("file1", "derpderpderp");
 
         //creating the objects directory

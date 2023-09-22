@@ -65,7 +65,7 @@ public class Tree {
         pw.close();
     }
 
-    private String encryptPassword(String password)
+    public String encryptPassword(String password)
     {
         String sha1 = "";
         try
