@@ -74,4 +74,9 @@ public class Commit {
         myTree.saveToObjects ();
         return (myTree.encryptPassword (""));
     }
+
+    public String getTreeSHA1FileLocation ()
+    {
+        return treeSHA1FileLocation;
+    }
 }
