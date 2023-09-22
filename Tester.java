@@ -16,7 +16,7 @@ public class Tester {
 
         System.out.println("hi");
         */
-        Commit myCommit = new Commit ("chrisdagoat", "thebestcommit");
-        System.out.println (myCommit.getDate ());
+        Commit myCommit = new Commit ("djkejklj2892820829042069", "chrisdagoat", "thebestcommit");
+        myCommit.writeToFile ();
     }
 }
