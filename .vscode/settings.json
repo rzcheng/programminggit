@@ -3,5 +3,6 @@
         "lib/**/*.jar",
         "junit-platform-console-standalone-1.10.0-2.jar",
         "Lib/**/*.jar"
-    ]
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }
