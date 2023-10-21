@@ -1,5 +1,4 @@
-import static org.junit.Assert.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -170,5 +169,42 @@ public class TreeTest {
         File file = new File (dir, "327426a7b35dc90762e335b17ea59ecfaec45e16");
 
         assertTrue(file.exists());
+    }
+
+    @Test
+    void testAddDirectory () throws Exception
+    {
+        //first create some files that we can use
+        File subDir = new File("./test1");
+        subDir.mkdirs();
+
+        FileWriter fw = new FileWriter("./test1/examplefile1.txt");
+        fw.write("the sha of this is ... ?");
+        fw.close();
+        fw = new FileWriter("./test1/examplefile2.txt");
+        fw.write("zomg wut are u doing. LAWL");
+        fw.close(); 
+        fw = new FileWriter("./test1/examplefile3.txt");
+        fw.write("LOL please dont read this.  Good job being thorough tho!");
+        fw.close(); 
+
+        Tree t = new Tree();
+        t.addDirectory("./test1");
+
+        t.saveToObjects();
+
+        BufferedReader bufferedReader = new BufferedReader (new FileReader ("./objects/" + t.getEncryption()));
+
+        StringBuilder stringBuilder = new StringBuilder();
+        while (bufferedReader.ready())
+        {
+            stringBuilder.append((char) bufferedReader.read());
+        }
+
+        bufferedReader.close();
+        String contents = stringBuilder.toString(); 
+
+        assertTrue("tree is missing expected files", contents.contains("./test1/examplefile1.txt"));
+        assertTrue("tree did not hash correctly", contents.contains("6cecd98f685b1c9bfce96f2bbf3f8f381bcc717e"));
     }
 }
