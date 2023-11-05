@@ -39,4 +39,28 @@ public class Utils {
         }
         return buf.toString();
     }
+
+    public static void writeToFile (String file, String fileContent) throws Exception
+    {
+        File f = new File (file);
+        f.createNewFile();
+
+        FileWriter fw = new FileWriter(f);
+        fw.write(fileContent);
+        fw.close(); 
+    }
+
+    public static String readFromFile (String file) throws IOException
+    {
+        BufferedReader br = new BufferedReader (new FileReader (file));
+
+        StringBuilder sb = new StringBuilder();
+        while (br.ready())
+        {
+            sb.append((char) br.read());
+        }
+
+        br.close();
+        return sb.toString(); 
+    }
 }

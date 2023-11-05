@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.security.*;
 
 /**
@@ -13,19 +16,21 @@ public class Blob {
     public Blob(String filePath) throws Exception {
 
         StringBuilder builder = new StringBuilder();
-
         BufferedReader buffer = new BufferedReader(new FileReader(filePath));
 
         while (buffer.ready()) {
             builder.append((char) buffer.read());
         }
-
         buffer.close();
 
         encryption = encryptThisString(builder.toString());
 
         File file = new File("./objects/" + encryption);
         file.createNewFile();
+
+        PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter("./objects/" + encryption)));
+            pw.print(builder.toString());
+            pw.close();
 
     }
 

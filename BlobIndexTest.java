@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import Utilities.FileUtils;
@@ -19,7 +18,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import Utilities.FileUtils;
 
 public class BlobIndexTest {
      @BeforeAll
@@ -38,6 +36,24 @@ public class BlobIndexTest {
         /*File objects = new File("./objects");
         if (!objects.exists())
             objects.mkdirs();*/
+
+            //deleting index
+        File myIndex = new File ("./index");
+        myIndex.delete();
+        File tree = new File ("./tree");
+        tree.delete();
+        //deleting objects
+        File myObjects = new File ("./objects");
+        File[] contents = myObjects.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete ();
+            }
+        }
+        myObjects.delete();
+        //creating new index file and objects folder:
+        Index i = new Index ();
+        i.initialize();
     }
 
     @AfterAll
@@ -47,6 +63,22 @@ public class BlobIndexTest {
          * Utils.deleteFile("index");
          * Utils.deleteDirectory("objects");
          */
+
+          //deleting index
+        File myIndex = new File ("./index");
+        myIndex.delete();
+        //deleting tree
+        File tree = new File ("./tree");
+        tree.delete();
+        //deleting objects
+        File myObjects = new File ("./objects");
+        File[] contents = myObjects.listFiles();
+        if (contents != null) {
+            for (File f : contents) {
+                f.delete ();
+            }
+        }
+        myObjects.delete();
     }
 
     @Test
@@ -56,8 +88,8 @@ public class BlobIndexTest {
         if (!objects.exists())
             FileUtils.createDirectory("./objects");
 
-        Blob testBlob = new Blob("file1");//????
-        File file = new File("732d12f7e4f2e629e2954acbb720c32c0be985d1");
+        Blob testBlob = new Blob("file1");
+        File file = new File("./objects/732d12f7e4f2e629e2954acbb720c32c0be985d1");
         Path path = Paths.get("objects");
 
         assertTrue(file.exists());
@@ -65,7 +97,7 @@ public class BlobIndexTest {
 
         //STILL NEED TO TEST CONTENTS MATCH
         String contents = "";
-        BufferedReader br = new BufferedReader(new FileReader("732d12f7e4f2e629e2954acbb720c32c0be985d1"));
+        BufferedReader br = new BufferedReader(new FileReader("./objects/" + "732d12f7e4f2e629e2954acbb720c32c0be985d1"));
         while(br.ready()) {
             contents += "" + br.readLine();
         }
@@ -81,7 +113,7 @@ public class BlobIndexTest {
         if (!objects.exists())
             objects.mkdirs();
 
-        Blob testBlob = new Blob("file1");//????
+        Blob testBlob = new Blob("file1");
         String encryption = testBlob.getEncryption();
 
         assertTrue(encryption.equals("732d12f7e4f2e629e2954acbb720c32c0be985d1"));
@@ -113,17 +145,23 @@ public class BlobIndexTest {
         String str = "";
         while(br.ready()) {
             str = "" + br.readLine();
-            if(str.equals("file1 : 732d12f7e4f2e629e2954acbb720c32c0be985d1")) {
+            // The string below is changed from "file1 : 732d12f7e4f2e629e2954acbb720c32c0be985d1" to 
+            // "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1"
+            if(str.equals("blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1")) {
                 entryExists = true;
             }
+            // if(str.contains("732d12f7e4f2e629e2954acbb720c32c0be985d1"))
+            //  {
+            //     entryExists = true;
+            // }
         }
         br.close();
-
+        System.out.println(str);
         //test if index file is updated
         assertTrue(entryExists);
 
         //test if blob created
-        File file = new File("732d12f7e4f2e629e2954acbb720c32c0be985d1");
+        File file = new File("./objects/732d12f7e4f2e629e2954acbb720c32c0be985d1");
 
         assertTrue(file.exists());
 
