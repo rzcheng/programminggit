@@ -42,7 +42,7 @@ public class Commit {
 
     public void writeToFile () throws Exception
     {
-        FileWriter writer = new FileWriter("./objects/" + generateCommitSHA1 (),false);
+        FileWriter writer = new FileWriter("./objects/" + generateCommitSHA1(),false);
         PrintWriter out = new PrintWriter(writer);
         String parentSHA1ToBeUsed = parentSHA1;
         String childSHA1ToBeUsed = childSHA1;
@@ -57,6 +57,11 @@ public class Commit {
         out.print (treeSHA1FileLocation + "\n" + parentSHA1ToBeUsed + "\n" + childSHA1ToBeUsed + "\n" + author + "\n" + getDate () + "\n" + summary);
         writer.close ();
         out.close ();
+
+        if (!parentSHA1.equals(""))
+        {
+            Utils.writeFileLine("./objects/" + parentSHA1, 3, generateCommitSHA1());
+        }
     }
 
  
@@ -154,7 +159,6 @@ public class Commit {
         // } else {
         //     this.childSHA1 = previousTreeSHA1;
         // }
-
 
         currentIndexTree.saveToObjects(); 
         treeSHA1FileLocation = currentIndexTree.getEncryption(); 

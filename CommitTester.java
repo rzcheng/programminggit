@@ -119,6 +119,7 @@ public class CommitTester
         i1.addBlob("file2.txt");
 
         Commit c1 = new Commit ("luke", "summary");
+        c1.writeToFile();
 
         System.out.println("Actual hash: " + c1.getTreeSHA1FileLocation()); 
 
@@ -188,6 +189,7 @@ public class CommitTester
         i1.addBlob("./file2.txt");
 
         Commit c1 = new Commit("luke", "Initial commit");
+        c1.writeToFile();
 
         String actualHashFirstCommit = c1.getTreeSHA1FileLocation();
         
@@ -204,6 +206,7 @@ public class CommitTester
         i1.addBlob("./folder1/fileInFolder.txt");   // Adding file from the folder to the index
 
         Commit c2 = new Commit("luke", "Second commit", actualHashFirstCommit); // Pass the SHA1 of the first commit as the parent of the second commit
+        c2.writeToFile();
 
         String actualHashSecondCommit = c2.getTreeSHA1FileLocation();
 
@@ -289,11 +292,11 @@ public class CommitTester
         i1.addBlob("./file1.txt");
         i1.addBlob("./file2.txt");
         
-        Commit c1 = new Commit("luke", "Initial commit");
-        String hashCommit1 = c1.getTreeSHA1FileLocation();
+        Commit c1 = new Commit("ryan", "Initial commit");
+        c1.writeToFile();
 
         // Assertions for first commit
-        assertEquals("Incorrect hash for the first commit's tree", hashCommit1, c1.getTreeSHA1FileLocation());
+        assertEquals("Incorrect hash for the first commit's tree", "b1853f603e70a9a032044fe5a83a823603227734", c1.getTreeSHA1FileLocation());
         assertEquals("Incorrect parent SHA1 for the first commit", "", c1.getParentSHA1());
         assertEquals("Child SHA1 for the first commit should be empty at this point", "", c1.getChildSHA1());
 
@@ -305,12 +308,12 @@ public class CommitTester
         i1.addBlob("./file3.txt");
         i1.addBlob("./folder2/fileInFolder2.txt"); // Adding file from the folder to the index
         
-        Commit c2 = new Commit("luke", "Second commit", hashCommit1);
-        String hashCommit2 = c2.getTreeSHA1FileLocation();
+        Commit c2 = new Commit("ryan", "Second commit", c1.generateCommitSHA1());
+        c2.writeToFile();
 
         // Assertions for second commit
-        assertEquals("Incorrect hash for the second commit's tree", hashCommit2, c2.getTreeSHA1FileLocation());
-        assertEquals("Incorrect parent SHA1 for the second commit", hashCommit1, c2.getParentSHA1());
+        assertEquals("Incorrect hash for the second commit's tree", "c6ccbdab5d7bcef8ad923c3551feb761be2caf7d", c2.getTreeSHA1FileLocation());
+        assertEquals("Incorrect parent SHA1 for the second commit", c1.generateCommitSHA1(), c2.getParentSHA1());
         assertEquals("Child SHA1 for the second commit should be empty at this point", "", c2.getChildSHA1());
 
         // Third Commit
@@ -319,12 +322,13 @@ public class CommitTester
         i1.addBlob("./file4.txt");
         i1.addBlob("./folder2/fileInFolder2.txt"); // Updating file from the folder in the index
         
-        Commit c3 = new Commit("luke", "Third commit", hashCommit2);
+        Commit c3 = new Commit("ryan", "Third commit", c2.generateCommitSHA1());
+        c3.writeToFile();
         String hashCommit3 = c3.getTreeSHA1FileLocation();
 
         // Assertions for third commit
-        assertEquals("Incorrect hash for the third commit's tree", hashCommit3, c3.getTreeSHA1FileLocation());
-        assertEquals("Incorrect parent SHA1 for the third commit", hashCommit2, c3.getParentSHA1());
+        assertEquals("Incorrect hash for the third commit's tree", "66e32f6739d362a6d102e46ce9cc42ec62344993", c3.getTreeSHA1FileLocation());
+        assertEquals("Incorrect parent SHA1 for the third commit", c2.generateCommitSHA1(), c3.getParentSHA1());
         assertEquals("Child SHA1 for the third commit should be empty at this point", "", c3.getChildSHA1());
 
         // Fourth Commit
@@ -334,12 +338,12 @@ public class CommitTester
         i1.addBlob("./file2.txt");
         i1.addBlob("./file4.txt");
         
-        Commit c4 = new Commit("luke", "Fourth commit", hashCommit3);
-        String hashCommit4 = c4.getTreeSHA1FileLocation();
+        Commit c4 = new Commit("ryan", "Fourth commit", c3.generateCommitSHA1());
+        c4.writeToFile();
 
         // Assertions for fourth commit
-        assertEquals("Incorrect hash for the fourth commit's tree", hashCommit4, c4.getTreeSHA1FileLocation());
-        assertEquals("Incorrect parent SHA1 for the fourth commit", hashCommit3, c4.getParentSHA1());
+        assertEquals("Incorrect hash for the fourth commit's tree", "713d1bf7631f2acc06f6e0a0aff6ffdd3063e8a1", c4.getTreeSHA1FileLocation());
+        assertEquals("Incorrect parent SHA1 for the fourth commit", c3.generateCommitSHA1(), c4.getParentSHA1());
         assertEquals("Child SHA1 for the fourth commit should be empty at this point", "", c4.getChildSHA1());
         
     }

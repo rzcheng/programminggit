@@ -16,6 +16,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
+
+//traversal: given file name of tree read thru each line of file
+// does the line contain the target file
+
+//sepearate the trees and the blobs
+/// if it does we're odne
+// if it doesnt we have another
+// if its a file we havent deleted and were looking for save it in the list
+// if its a tree go back and check thtat tree 
+
 enum EntryType
     {
         BLOB("blob"),
@@ -106,6 +116,10 @@ public class Tree
         // Save the updated tree
         this.saveToObjects();
     }
+
+    //find file, one line of code, if file is not the target file, add it to a list
+    // point to tree before that, 
+    // point to all files before that 
 
     // Method to add a file to the tree
     private void addFileToTree(String filename, String sha1) throws IOException {
@@ -267,16 +281,6 @@ public class Tree
         }
     }
 
-    // public void initialize() throws IOException {
-    //     File objects = new File("./objects");
-    //     if (!objects.exists())
-    //         objects.mkdirs();
-    //     tree = new File ("tree");
-
-    //     if(!tree.exists()) {
-    //         tree.createNewFile();
-    //     }
-    // }
     public void initialize() throws IOException 
     {
         File objects = new File("./objects");
@@ -423,26 +427,17 @@ public class Tree
         // Method to load the Tree from a SHA1 file location
     public void loadFromSHA1(String fileLocation) throws IOException 
     {
-        // Read the contents of the file
         String content = new String(Files.readAllBytes(Paths.get(fileLocation)));
     
-        // Process the content to initialize the savedTree
-        // This depends on how your Tree is structured and how the data in the file needs to be parsed
-        // For example, if your Tree class has a method to add blobs from a string you would call it here
         this.parseAndAddBlobs(content);
     }
     
-        // Helper method to parse the content of the file and add it to the Tree
     private void parseAndAddBlobs(String content) 
     {
-        // Assuming the content is a list of blob entries separated by newlines
         String[] blobEntries = content.split("\\r?\\n");
         for (String blobEntry : blobEntries) 
         {
-            // Here you would parse each blob entry and add it to the Tree
-            // For example, if you just add the string to a list:
              this.blobList.add(blobEntry);
-            // Or if you have a more complex structure, you'd parse the blob entry accordingly
         }
     }
 
@@ -458,5 +453,65 @@ public class Tree
         br.close();
         throw new Exception("line not found", null);
     }
+
+    private String traverseForFile (String fileToGet, String parentSHA) throws Exception
+    {
+
+        boolean isInTree = false;  
+
+        ArrayList<String> commits = new ArrayList<String>();
+
+        BufferedReader br = new BufferedReader(new FileReader("./objects/" + parentSHA));
+
+        while (br.ready()) 
+        {
+            commits.add(br.readLine());
+        }
+
+        br.close(); 
+
+        ArrayList<String> trees = new ArrayList<String>();
+
+        BufferedReader br2 = new BufferedReader(new FileReader("./objects/" + commits.get(0)));
+
+        while (br2.ready()) 
+        {
+            commits.add(br2.readLine());
+        }
+
+        br2.close(); 
+
+
+        for (String s : trees) {
+            String firstWord = s.substring(0, s.indexOf(" "));
+        
+            if (firstWord.equals("blob")) {
+
+                String lastWord = "";
+                if (s != null && !s.isEmpty()) {
+                    String[] words = s.trim().split("\\s+"); // \\s+ is one or more whitespace characters
+                    lastWord = words[words.length - 1];
+                }
+                if (lastWord.equals(fileToGet)) {
+                    isInTree = true; 
+                } else {
+                    addToTree(s); 
+                }
+            }
+        }
+        
+        if (isInTree)
+        {
+            return parentSHA; 
+        }
+
+        if (commits.get(1).equals(""))
+        {
+            throw new Exception("file is not there");
+        }
+
+        return traverseForFile(fileToGet, commits.get(1));
+    }
+
 
 }

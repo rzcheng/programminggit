@@ -242,7 +242,6 @@ public class TreeTest {
         savedTree.loadFromSHA1("./objects/" + commit.getTreeSHA1FileLocation());
 
         // Assertions would depend on how Tree is implemented to check for file existence
-        // For example if Tree has a method like hasFile:
         assertFalse(savedTree.hasFile("./file2.txt")); // File2 should not exist after deletion
         assertTrue(savedTree.hasFile("./file1.txt")); // File1 should exist
 

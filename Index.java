@@ -4,12 +4,9 @@ import java.io.*;
 /**
  * Index
  */
-public class Index 
-{
+public class Index {
 
     HashMap<String, String> hashes;
-
-
 
     public Index() 
     {
@@ -34,7 +31,7 @@ public class Index
         // Check if the file already exists in the hash map
         for (String key : hashes.keySet()) {
             if (hashes.get(key).equals(filename)) {
-                // File exists, let's update the entry
+                // File definitely should exist, let's update the entry
                 Blob blob = new Blob(filename);
                 hashes.put("blob : " + blob.getEncryption(), filename); // Update with new SHA1
                 writeToIndex();
