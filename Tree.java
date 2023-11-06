@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-
 //traversal: given file name of tree read thru each line of file
 // does the line contain the target file
 
@@ -26,31 +25,29 @@ import java.util.Map;
 // if its a file we havent deleted and were looking for save it in the list
 // if its a tree go back and check thtat tree 
 
-enum EntryType
-    {
-        BLOB("blob"),
-        TREE("tree"),
-        UNKNOWN("");
+enum EntryType {
+    BLOB("blob"),
+    TREE("tree"),
+    UNKNOWN("");
 
-        private final String label;
+    private final String label;
 
-        EntryType(String label) {
-            this.label = label;
-        }
-
-        // A method to determine the type based on the input string
-        public static EntryType fromString(String input) {
-            for (EntryType type : values()) {
-                if (input.startsWith(type.label)) {
-                    return type;
-                }
-            }
-            return UNKNOWN;
-        }
+    EntryType(String label) {
+        this.label = label;
     }
 
-public class Tree 
-{
+    // A method to determine the type based on the input string
+    public static EntryType fromString(String input) {
+        for (EntryType type : values()) {
+            if (input.startsWith(type.label)) {
+                return type;
+            }
+        }
+        return UNKNOWN;
+    }
+}
+
+public class Tree {
     private Map<String, String> fileSHA1Map = new HashMap<>();
 
     // Constructor and other methods ...
@@ -60,38 +57,35 @@ public class Tree
         return fileSHA1Map.get(fileName);
     }
 
-    // Method to load a file and its SHA1 into the map (you may already have a similar method)
+    // Method to load a file and its SHA1 into the map (you may already have a
+    // similar method)
     public void addFileSHA1(String fileName, String sha1) {
         fileSHA1Map.put(fileName, sha1);
     }
-    //might need a hashmap but made it with arraylist
+
+    // might need a hashmap but made it with arraylist
     private ArrayList<String> blobList;
     private ArrayList<String> treeList;
     String encryption = "";
     File tree;
     private Index index;
-    public Tree () throws IOException
-    {
+
+    public Tree() throws IOException {
         blobList = new ArrayList<String>();
         treeList = new ArrayList<String>();
-        initialize(); 
+        initialize();
     }
-    public Tree(Index index) throws Exception 
-    {
-        if (index == null) 
-        {
+
+    public Tree(Index index) throws Exception {
+        if (index == null) {
             this.index = new Index();
-        } 
-        else 
-        {
+        } else {
             this.index = index;
         }
         // Initialize lists and potentially load existing tree contents
         this.blobList = new ArrayList<>();
         this.treeList = new ArrayList<>();
         this.initialize();
-
-
 
         // Loop over the files in the index
         for (Map.Entry<String, String> fileEntry : index.getFiles().entrySet()) {
@@ -117,9 +111,9 @@ public class Tree
         this.saveToObjects();
     }
 
-    //find file, one line of code, if file is not the target file, add it to a list
-    // point to tree before that, 
-    // point to all files before that 
+    // find file, one line of code, if file is not the target file, add it to a list
+    // point to tree before that,
+    // point to all files before that
 
     // Method to add a file to the tree
     private void addFileToTree(String filename, String sha1) throws IOException {
@@ -128,8 +122,7 @@ public class Tree
     }
 
     // Method to update a file in the tree
-    private void updateFileInTree(String filename, String newSha1) throws Exception 
-    {
+    private void updateFileInTree(String filename, String newSha1) throws Exception {
         // Find the existing entry for the file
         String existingEntry = findLine(filename, tree);
         if (existingEntry != null) {
@@ -137,29 +130,25 @@ public class Tree
             deleteTree(existingEntry);
             // Add the new entry
             addFileToTree(filename, newSha1);
-        } 
-        else 
-        {
+        } else {
             // If the file wasn't part of the tree yet, just add it
             addFileToTree(filename, newSha1);
         }
     }
 
     private void loadTreeContents() throws IOException {
-        tree = new File ("./tree");
-        //blobList.clear();  // Clear the blobList
-        //treeList.clear();  // Clear the treeList
-    
-        if(tree.exists()) {
+        tree = new File("./tree");
+        // blobList.clear(); // Clear the blobList
+        // treeList.clear(); // Clear the treeList
+
+        if (tree.exists()) {
             BufferedReader br = new BufferedReader(new FileReader(tree));
             String line;
-            while((line = br.readLine()) != null) {
+            while ((line = br.readLine()) != null) {
                 EntryType type = EntryType.fromString(line);
-                if(type == EntryType.BLOB && !blobList.contains(line)) 
-                {  
+                if (type == EntryType.BLOB && !blobList.contains(line)) {
                     blobList.add(line);
-                } else if(type == EntryType.TREE && !treeList.contains(line)) 
-                {  
+                } else if (type == EntryType.TREE && !treeList.contains(line)) {
                     treeList.add(line);
                 }
             }
@@ -167,59 +156,47 @@ public class Tree
         }
     }
 
-    public boolean hasFile(String filePath) 
-    {
-        for (String blobEntry : blobList) 
-        {
-            // Extract the file path part from the blob entry. Assuming the format "blob : sha1 : path"
+    public boolean hasFile(String filePath) {
+        for (String blobEntry : blobList) {
+            // Extract the file path part from the blob entry. Assuming the format "blob :
+            // sha1 : path"
             String[] parts = blobEntry.split(" : ");
-            if (parts.length > 2 && parts[2].equals(filePath)) 
-            {
+            if (parts.length > 2 && parts[2].equals(filePath)) {
                 return true;
             }
         }
         return false;
     }
-    
 
-  
-    public void saveToObjects() throws Exception 
-    {
-        loadTreeContents();  // Make sure to have the latest tree contents
-    
+    public void saveToObjects() throws Exception {
+        loadTreeContents(); // Make sure to have the latest tree contents
+
         String treeContent = "";
-    
+
         treeContent += Utils.arrayListToFileFormat(blobList);
         treeContent += Utils.arrayListToFileFormat(treeList);
-    
+
         encryption = Utils.stringtoSHA(treeContent);
         Utils.writeToFile("./objects/" + encryption, treeContent);
-        Utils.writeToFile("./tree", treeContent);          
+        Utils.writeToFile("./tree", treeContent);
     }
 
-     
-
-    public String getEncryption() 
-    {
+    public String getEncryption() {
         return encryption;
     }
-    
+
     // fixed method addToTree
     public boolean addToTree(String input) throws IOException {
-        if (!entryExists(input)) 
-        {
+        if (!entryExists(input)) {
             EntryType type = EntryType.fromString(input);
-            switch (type)
-             {
+            switch (type) {
                 case BLOB:
-                    if(!blobList.contains(input)) 
-                    {  
+                    if (!blobList.contains(input)) {
                         blobList.add(input);
                     }
                     break;
                 case TREE:
-                    if(!treeList.contains(input)) 
-                    {  
+                    if (!treeList.contains(input)) {
                         treeList.add(input);
                     }
                     break;
@@ -232,10 +209,9 @@ public class Tree
         }
         return false;
     }
-    
-    //checks if input line appears in our tree
-    private boolean entryExists(String inputLine) throws IOException
-    {
+
+    // checks if input line appears in our tree
+    private boolean entryExists(String inputLine) throws IOException {
         return blobList.contains(inputLine) || treeList.contains(inputLine);
     }
 
@@ -251,26 +227,20 @@ public class Tree
             }
         }
     }
-  
 
-    public void addDirectory (String directory) throws Exception
-    {
-        File directoryFile = new File (directory);
+    public void addDirectory(String directory) throws Exception {
+        File directoryFile = new File(directory);
         if (!directoryFile.isDirectory()) {
-            throw new Exception (directory + " is an invalid directory path.");
+            throw new Exception(directory + " is an invalid directory path.");
         }
 
-        for (File file : directoryFile.listFiles()) 
-        {
-            if (file.isFile())
-            {
+        for (File file : directoryFile.listFiles()) {
+            if (file.isFile()) {
                 String filePath = directory + "/" + file.getName();
-                Blob blob = new Blob (filePath); //optional
+                Blob blob = new Blob(filePath); // optional
 
                 addToTree("blob : " + blob.getEncryption() + " : " + filePath);
-            }
-            else if (file.isDirectory())
-            { 
+            } else if (file.isDirectory()) {
                 Tree subTree = new Tree();
                 String tempPath = file.getPath();
                 subTree.addDirectory(tempPath);
@@ -281,8 +251,7 @@ public class Tree
         }
     }
 
-    public void initialize() throws IOException 
-    {
+    public void initialize() throws IOException {
         File objects = new File("./objects");
         if (!objects.exists()) {
             objects.mkdirs();
@@ -295,28 +264,26 @@ public class Tree
         }
     }
 
-
-    public void rename(File fileName) throws IOException 
-    {
+    public void rename(File fileName) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
         String str = "";
 
-        while(br.ready()) {
-            str += br.readLine()+"\n";
+        while (br.ready()) {
+            str += br.readLine() + "\n";
         }
-        str = str.trim();//get rid of extra line
+        str = str.trim();// get rid of extra line
 
         br.close();
 
-        //converting to sha1
+        // converting to sha1
 
         String sha1 = encryptPassword(str);
 
-        //printing to objects folder
+        // printing to objects folder
         String dirName = "./objects/";
-        File dir = new File (dirName);//create this directory (File class java)
-        //dir.mkdir();
-        File newFile = new File (dir, sha1);
+        File dir = new File(dirName);// create this directory (File class java)
+        // dir.mkdir();
+        File newFile = new File(dir, sha1);
 
         PrintWriter pw = new PrintWriter(newFile);
 
@@ -325,57 +292,47 @@ public class Tree
         pw.close();
     }
 
-    public String encryptPassword(String password)
-    {
+    public String encryptPassword(String password) {
         String sha1 = "";
-        try
-        {
+        try {
             MessageDigest crypt = MessageDigest.getInstance("SHA-1");
             crypt.reset();
             crypt.update(password.getBytes("UTF-8"));
             sha1 = byteToHex(crypt.digest());
-        }
-        catch(NoSuchAlgorithmException e)
-        {
+        } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
-        }
-        catch(UnsupportedEncodingException e)
-        {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return sha1;
     }
 
-    private String byteToHex(final byte[] hash)
-    {
+    private String byteToHex(final byte[] hash) {
         Formatter formatter = new Formatter();
-        for (byte b : hash)
-        {
+        for (byte b : hash) {
             formatter.format("%02x", b);
         }
         String result = formatter.toString();
         formatter.close();
         return result;
     }
-    
-    public boolean deleteTree(String input) throws Exception 
-    {
+
+    public boolean deleteTree(String input) throws Exception {
         File inputFile = new File("tree");
         File tempFile = new File("myTempFile.txt");
         String lineToRemove = "";
-        
-        if(!entryExists2(input, tree)) {
+
+        if (!entryExists2(input, tree)) {
             return false;
         }
 
-        lineToRemove = findLine(input,tree);
-        System.out.println("remove: " + lineToRemove);//test: correct
+        lineToRemove = findLine(input, tree);
+        System.out.println("remove: " + lineToRemove);// test: correct
 
-        String type = lineToRemove.substring(0,4);
-        if(type.equals("blob")) {
+        String type = lineToRemove.substring(0, 4);
+        if (type.equals("blob")) {
             blobList.remove(lineToRemove);
-        }
-        else if(type.equals("tree")) {
+        } else if (type.equals("tree")) {
             treeList.remove(lineToRemove);
         }
 
@@ -385,12 +342,11 @@ public class Tree
         return successful;
     }
 
-
     private boolean entryExists2(String input, File tree2) throws IOException {
         BufferedReader br = new BufferedReader(new FileReader(tree));
-        while(br.ready()) {
+        while (br.ready()) {
             String str = br.readLine();
-            if(str.contains(input)) {
+            if (str.contains(input)) {
                 br.close();
                 return true;
             }
@@ -401,51 +357,46 @@ public class Tree
 
     private void printList(File fileName) throws IOException {
         PrintWriter pw = new PrintWriter(new FileWriter(fileName));
-        for(int i=0; i<blobList.size(); i++) {
+        for (int i = 0; i < blobList.size(); i++) {
             String str = blobList.get(i);
-            if(treeList.size()!=0 && i==blobList.size()-1) {
+            if (treeList.size() != 0 && i == blobList.size() - 1) {
                 pw.println(str);
-            }
-            else if(i!=blobList.size()-1) {
+            } else if (i != blobList.size() - 1) {
                 pw.println(str);
-            }
-            else {
+            } else {
                 pw.print(str);
             }
         }
-        for(int i=0; i<treeList.size(); i++) {
+        for (int i = 0; i < treeList.size(); i++) {
             String str = treeList.get(i);
-            if(i!=treeList.size()-1) {
+            if (i != treeList.size() - 1) {
                 pw.println(str);
-            }
-            else {
+            } else {
                 pw.print(str);
             }
         }
         pw.close();
     }
-        // Method to load the Tree from a SHA1 file location
-    public void loadFromSHA1(String fileLocation) throws IOException 
-    {
+
+    // Method to load the Tree from a SHA1 file location
+    public void loadFromSHA1(String fileLocation) throws IOException {
         String content = new String(Files.readAllBytes(Paths.get(fileLocation)));
-    
+
         this.parseAndAddBlobs(content);
     }
-    
-    private void parseAndAddBlobs(String content) 
-    {
+
+    private void parseAndAddBlobs(String content) {
         String[] blobEntries = content.split("\\r?\\n");
-        for (String blobEntry : blobEntries) 
-        {
-             this.blobList.add(blobEntry);
+        for (String blobEntry : blobEntries) {
+            this.blobList.add(blobEntry);
         }
     }
 
     private String findLine(String input, File tree2) throws Exception {
         BufferedReader br = new BufferedReader(new FileReader(tree));
-        while(br.ready()) {
+        while (br.ready()) {
             String str = br.readLine();
-            if(str.contains(input)) {
+            if (str.contains(input)) {
                 br.close();
                 return str;
             }
@@ -454,64 +405,116 @@ public class Tree
         throw new Exception("line not found", null);
     }
 
-    private String traverseForFile (String fileToGet, String parentSHA) throws Exception
-    {
-
-        boolean isInTree = false;  
+    public static String findTreeFromCommit(String commitSHA) throws Exception {
+        boolean isInTree = false;
 
         ArrayList<String> commits = new ArrayList<String>();
 
-        BufferedReader br = new BufferedReader(new FileReader("./objects/" + parentSHA));
+        BufferedReader br = new BufferedReader(new FileReader("./objects/" + commitSHA));
 
-        while (br.ready()) 
-        {
+        while (br.ready()) {
             commits.add(br.readLine());
         }
 
-        br.close(); 
+        br.close();
 
-        ArrayList<String> trees = new ArrayList<String>();
-
-        BufferedReader br2 = new BufferedReader(new FileReader("./objects/" + commits.get(0)));
-
-        while (br2.ready()) 
-        {
-            commits.add(br2.readLine());
-        }
-
-        br2.close(); 
-
-
-        for (String s : trees) {
-            String firstWord = s.substring(0, s.indexOf(" "));
-        
-            if (firstWord.equals("blob")) {
-
-                String lastWord = "";
-                if (s != null && !s.isEmpty()) {
-                    String[] words = s.trim().split("\\s+"); // \\s+ is one or more whitespace characters
-                    lastWord = words[words.length - 1];
-                }
-                if (lastWord.equals(fileToGet)) {
-                    isInTree = true; 
-                } else {
-                    addToTree(s); 
-                }
-            }
-        }
-        
-        if (isInTree)
-        {
-            return parentSHA; 
-        }
-
-        if (commits.get(1).equals(""))
-        {
-            throw new Exception("file is not there");
-        }
-
-        return traverseForFile(fileToGet, commits.get(1));
+        return commits.get(0);
     }
 
+    public static ArrayList<String> traverseForFile(String targetFilePath, String treeSHA) throws Exception {
+
+        boolean foundFile = false;
+        ArrayList<String> currentTree = new ArrayList<String>();
+        ArrayList<String> trees = new ArrayList<String>();
+        ArrayList<String> blobs = new ArrayList<String>();
+
+        BufferedReader br2 = new BufferedReader(new FileReader("./objects/" + treeSHA));
+
+        while (br2.ready()) {
+            currentTree.add(br2.readLine());
+        }
+
+        br2.close();
+
+        for (String s : currentTree) {
+            String firstWord = s.substring(0, s.indexOf(" "));
+
+            if (firstWord.equals("blob")) {
+
+                if (!s.contains(targetFilePath)) {
+                    blobs.add(s);
+                } else {
+                    foundFile = true;
+                }
+                // String lastWord = "";
+                // if (s != null && !s.isEmpty()) {
+                // String[] words = s.trim().split("\\s+"); // \\s+ is one or more whitespace
+                // characters
+                // lastWord = words[words.length - 1];
+                // }
+                // if (lastWord.equals(targetFilePath)) {
+                // isInTree = true;
+                // } else {
+                // addToTree(s);
+                // }
+            } else {
+                trees.add(s);
+            }
+
+        }
+
+        if (trees.size() != 0) {
+        blobs.addAll(traverseForFile(targetFilePath, trees.get(0)));
+        }
+
+        return blobs;
+
+        // if (isInTree) {
+        // return parentSHA;
+        // }
+
+        // if (commits.get(1).equals("")) {
+        // throw new Exception("file does not exist");
+        // }
+
+        // return traverseForFile(targetFilePath, commits.get(1));
+    }
+
+    // public void deleteLastFile(String fileToDelete, String parentSHA) throws Exception {
+    //     String commitSHA = traverseForFile(fileToDelete, parentSHA);
+
+    //     ArrayList<String> linesofcommit = new ArrayList<String>();
+
+    //     BufferedReader br = new BufferedReader(new FileReader("./objects/" + parentSHA));
+
+    //     while (br.ready()) {
+    //         linesofcommit.add(br.readLine());
+    //     }
+
+    //     br.close();
+
+    //     for (int i = treeList.size() - 1; i >= 0; i--) {
+    //         String[] split = treeList.get(i).split(" : ");
+    //         if (split.length == 2) {
+    //             treeList.remove(i);
+    //         }
+    //     }
+
+    //     if (!linesofcommit.get(1).equals("")) {
+
+    //         ArrayList<String> pastCommitContent = new ArrayList<String>();
+
+    //         BufferedReader br2 = new BufferedReader(new FileReader("./objects/" + linesofcommit.get(1)));
+
+    //         while (br2.ready()) {
+    //             linesofcommit.add(br2.readLine());
+    //         }
+
+    //         br2.close();
+
+    //         addToTree("tree : " + pastCommitContent.get(0));
+
+    //     }
+    // }
 
 }

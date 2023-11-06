@@ -230,7 +230,7 @@ public class TreeTest {
 
         // Assuming that the Tree class has a constructor that accepts an Index object
         Tree tree = new Tree(index);
-        Commit commit = new Commit("Author Name", "Commit message", "parentSHA1Hash");
+        Commit commit = new Commit("Author Name", "Commit message");
 
         // Write the commit (which should also write the tree)
         commit.setMyTree(tree); // Let's assume we need to associate the Tree with the Commit
@@ -244,11 +244,22 @@ public class TreeTest {
         // Assertions would depend on how Tree is implemented to check for file existence
         assertFalse(savedTree.hasFile("./file2.txt")); // File2 should not exist after deletion
         assertTrue(savedTree.hasFile("./file1.txt")); // File1 should exist
+    }
 
-        // If Tree can get file SHA1, then:
-        assertEquals("newfile1sha1", savedTree.getFileSHA1("./file1.txt")); // File1 should have the new SHA1
+    @Test
+    public void testTreeTraverse() throws Exception{
 
-        // Further assertions could include checking the parentSHA1 is set correctly
-        assertEquals("parentSHA1Hash", commit.getParentSHA1());
+
+        File tree = new File("./tree");
+        tree.delete();
+
+        Tree test = new Tree();
+
+        String input = "blob : 732d12f7e4f2e629e2954acbb720c32c0be985d1 : file1";
+        test.addToTree(input);
+        test.saveToObjects();
+
+        assertEquals(Tree.traverseForFile("file1", test.getEncryption()).size(), 0);
+
     }
 }
