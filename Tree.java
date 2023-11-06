@@ -446,17 +446,7 @@ public class Tree {
                 } else {
                     foundFile = true;
                 }
-                // String lastWord = "";
-                // if (s != null && !s.isEmpty()) {
-                // String[] words = s.trim().split("\\s+"); // \\s+ is one or more whitespace
-                // characters
-                // lastWord = words[words.length - 1];
-                // }
-                // if (lastWord.equals(targetFilePath)) {
-                // isInTree = true;
-                // } else {
-                // addToTree(s);
-                // }
+
             } else {
                 trees.add(s);
             }
@@ -469,52 +459,6 @@ public class Tree {
 
         return blobs;
 
-        // if (isInTree) {
-        // return parentSHA;
-        // }
-
-        // if (commits.get(1).equals("")) {
-        // throw new Exception("file does not exist");
-        // }
-
-        // return traverseForFile(targetFilePath, commits.get(1));
     }
-
-    // public void deleteLastFile(String fileToDelete, String parentSHA) throws Exception {
-    //     String commitSHA = traverseForFile(fileToDelete, parentSHA);
-
-    //     ArrayList<String> linesofcommit = new ArrayList<String>();
-
-    //     BufferedReader br = new BufferedReader(new FileReader("./objects/" + parentSHA));
-
-    //     while (br.ready()) {
-    //         linesofcommit.add(br.readLine());
-    //     }
-
-    //     br.close();
-
-    //     for (int i = treeList.size() - 1; i >= 0; i--) {
-    //         String[] split = treeList.get(i).split(" : ");
-    //         if (split.length == 2) {
-    //             treeList.remove(i);
-    //         }
-    //     }
-
-    //     if (!linesofcommit.get(1).equals("")) {
-
-    //         ArrayList<String> pastCommitContent = new ArrayList<String>();
-
-    //         BufferedReader br2 = new BufferedReader(new FileReader("./objects/" + linesofcommit.get(1)));
-
-    //         while (br2.ready()) {
-    //             linesofcommit.add(br2.readLine());
-    //         }
-
-    //         br2.close();
-
-    //         addToTree("tree : " + pastCommitContent.get(0));
-
-    //     }
-    // }
 
 }
